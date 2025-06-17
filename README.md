@@ -4,4 +4,4 @@ A simple REST API project written in Go.
 
 ---
 
-## Hopefully, Muhammad-Amin will give me HCoins now)
+## Hopefully, Muhammad-Emin will give me HCoins now)
