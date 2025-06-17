@@ -69,14 +69,19 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 
 func getTask(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	_, ok := tasks[id]
-	if ok {
-		w.WriteHeader(http.StatusOK)
+	task, ok := tasks[id]
+
+	w.Header().Set("Content-Type", "application/json")
+
+	if !ok {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Task not found"})
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusBadRequest)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(task)
 }
+
 
 func deleteTask(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
@@ -86,6 +91,7 @@ func deleteTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	delete(tasks, id)
 	w.WriteHeader(http.StatusBadRequest)
 }
 
